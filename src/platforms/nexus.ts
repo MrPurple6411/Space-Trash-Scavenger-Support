@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -17,6 +17,6 @@
  */
 
 /**
- * Nexus Mods mod id for Subnautica: Below Zero.
+ * Nexus Mods mod id for Space Trash Scavenger.
  */
-export const NEXUS_GAME_ID = 'subnauticabelowzero';
+export const NEXUS_GAME_ID = 'spacetrashscavenger';

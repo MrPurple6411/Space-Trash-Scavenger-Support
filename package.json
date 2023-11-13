@@ -1,40 +1,40 @@
 {
-  "name": "subnautica-below-zero-support",
-  "version": "2.0.3",
-  "description": "Vortex support for Subnautica: Below Zero",
+  "name": "space-trash-scavenger-support",
+  "version": "1.0.0",
+  "description": "Vortex support for Space Trash Scavenger",
   "license": "GPL-3.0",
   "author": "toebeann, MrPurple6411, Chloe S, AlexejheroYTB",
-  "homepage": "https://github.com/toebeann/subnautica-below-zero-support",
+  "homepage": "https://github.com/MrPurple6411/Space-Trash-Scavenger-Support",
   "repository": {
     "type": "git",
-    "url": "https://github.com/toebeann/subnautica-below-zero-support.git"
+    "url": "https://github.com/MrPurple6411/Space-Trash-Scavenger-Support.git"
   },
   "bugs": {
-    "url": "https://github.com/toebeann/subnautica-below-zero-support/issues"
+    "url": "https://github.com/MrPurple6411/Space-Trash-Scavenger-Support/issues"
   },
   "funding": [
-    "https://github.com/toebeann/subnautica-below-zero-support?sponsor=1",
+    "https://github.com/MrPurple6411/Space-Trash-Scavenger-Support?sponsor=1",
     {
       "type": "github",
-      "url": "https://github.com/sponsors/toebeann"
+      "url": "https://github.com/sponsors/MrPurple6411"
     },
     {
-      "type": "kofi",
-      "url": "https://ko-fi.com/toebean_"
+      "type": "patreon",
+      "url": "https://www.patreon.com/MrPurple6411"
     },
     {
       "type": "paypal",
-      "url": "https://paypal.me/tobeyblaber"
+      "url": "https://paypal.me/MrPurple6411"
     }
   ],
   "config": {
-    "issueTracker": "https://github.com/toebeann/subnautica-below-zero-support/issues"
+    "issueTracker": "https://github.com/MrPurple6411/Space-Trash-Scavenger-Support/issues"
   },
   "scripts": {
     "webpack": "webpack --config webpack.config.js --display-error-details --progress --profile --color",
     "build": "rimraf dist && mkdir dist && extractInfo && pnpm webpack",
-    "bundle": "pnpm build && rimraf subnautica-below-zero-support.7z && 7z a -t7z subnautica-below-zero-support.7z ./assets/* && 7z a -t7z subnautica-below-zero-support.7z ./dist/*",
-    "release": "pnpm build --mode production --devtool none && rimraf subnautica-below-zero-support.7z && 7z a -t7z subnautica-below-zero-support.7z ./assets/* && 7z a -t7z subnautica-below-zero-support.7z ./dist/*"
+    "bundle": "pnpm build && rimraf space-trash-scavenger-support.7z && 7z a -t7z space-trash-scavenger-support.7z ./assets/* && 7z a -t7z space-trash-scavenger-support.7z ./dist/*",
+    "release": "pnpm build --mode production --devtool none && rimraf space-trash-scavenger-support.7z && 7z a -t7z space-trash-scavenger-support.7z ./assets/* && 7z a -t7z space-trash-scavenger-support.7z ./dist/*"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",

@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -18,7 +18,6 @@
 import { join } from 'path';
 import { store } from '.';
 import { TRANSLATION_OPTIONS } from './constants';
-import { areAnyQModsEnabled, isQModManagerEnabled } from './qmodmanager';
 import { getDiscovery, getMods, reinstallMod, enableMods, isFile } from './utils';
 import { BEPINEX_5_CORE_DLL, BEPINEX_5_MOD_TYPE } from './mod-types/bepinex-5';
 import { BEPINEX_6_CORE_DLL, BEPINEX_6_MOD_TYPE } from './mod-types/bepinex-6';
@@ -34,7 +33,7 @@ import opn = util.opn;
 /**
  * URL to the BepInEx page on Nexus Mods.
  */
-export const BEPINEX_URL = 'https://www.nexusmods.com/subnauticabelowzero/mods/344';
+export const BEPINEX_URL = 'https://www.nexusmods.com/spacetrashscavenger/mods/1';
 /**
  * BepInEx directory name.
  */
@@ -122,33 +121,9 @@ export const validateBepInEx = async (api: IExtensionApi) => {
         return;
     }
 
-    const currentConfig = store.get('bepinex-config') ?? 'unknown';
-    const needsConfig = isQModManagerEnabled(api.getState()) && areAnyQModsEnabled(api.getState()) ? 'legacy' : 'stable';
-
     const bepinexPacks = getMods(api.getState(), 'enabled').filter(mod => [BEPINEX_5_MOD_TYPE, BEPINEX_6_MOD_TYPE].includes(mod.type));
     const stagingFolder = installPathForGame(api.getState(), NEXUS_GAME_ID);
 
-    if (currentConfig === needsConfig ||
-        (bepinexPacks.length === 1 &&
-            !await isFile(join(stagingFolder, bepinexPacks[0].installationPath, BEPINEX_DIR, BEPINEX_CONFIG_DIR, `bepinex.${needsConfig}.cfg`)))) {
-        api.dismissNotification?.('reinstall-bepinex');
-        return;
-    }
-
-    // user is using the wrong config, so we need to reinstall BepInEx to switch to the correct config
-
-    const potentials = getMods(api.getState(), 'enabled').filter(mod => [BEPINEX_5_MOD_TYPE, BEPINEX_6_MOD_TYPE].includes(mod.type));
-    const bepinex = potentials.length === 1 ? potentials[0] : undefined;
-
-    api.sendNotification?.({
-        id: 'reinstall-bepinex',
-        type: 'warning',
-        title: api.translate('{{bepinex}} config file update needed', TRANSLATION_OPTIONS),
-        message: api.translate(`Please reinstall {{bepinex}} to apply update.`, TRANSLATION_OPTIONS),
-        actions: [
-            bepinex // if there's only one matching BepInEx mod installed, we can reinstall it automatically
-                ? { title: api.translate('Reinstall'), action: () => reinstallMod(api, bepinex) }
-                : { title: api.translate('Get {{bepinex}}', TRANSLATION_OPTIONS), action: () => opn(BEPINEX_URL) }
-        ],
-    });
+    api.dismissNotification?.('reinstall-bepinex');
+    return;
 }

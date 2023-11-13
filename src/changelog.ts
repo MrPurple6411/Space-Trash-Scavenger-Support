@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -189,7 +189,7 @@ export const parseChangelog = async (changelog = changelogMd) => {
 }
 
 const showChangelog = async (api: IExtensionApi, html: string, releases: Awaited<ReturnType<typeof parseChangelog>>['releases']) =>
-    api.showDialog?.('info', 'Subnautica: Below Zero Support extension updated',
+    api.showDialog?.('info', 'Space Trash Scavenger Support extension updated',
         {
             htmlText: `<div class="changelog-wrapper"><style>
 .dialog-container {
@@ -241,7 +241,7 @@ export const validateChangelog = async (api: IExtensionApi) => {
         api.sendNotification?.({
             type: 'success',
             title: 'Extension updated',
-            message: 'Subnautica: Below Zero Support extension updated',
+            message: 'Space Trash Scavenger Support extension updated',
             actions: [{ title: 'Changelog', action: () => showChangelog(api, html, releases) }],
         });
     }

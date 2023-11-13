@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -16,9 +16,7 @@
  * this program; if not, see <https://www.gnu.org/licenses>.
  */
 import { join, sep } from 'path';
-import { QMM_CORE_DLL } from './qmodmanager-4';
-import { BEPINEX_CORE_DIR, BEPINEX_DIR, BEPINEX_MOD_PATH } from '../bepinex';
-import { QMM_DIR } from '../qmodmanager';
+import { BEPINEX_CORE_DIR, BEPINEX_DIR } from '../bepinex';
 import { getDiscovery } from '../utils';
 import { BEPINEX_INJECTOR_CORE_FILES } from '../installers/bepinex';
 import { NEXUS_GAME_ID } from '../platforms/nexus';
@@ -62,7 +60,6 @@ export const test = async (installInstructions: IInstruction[]): Promise<boolean
         .filter(instruction => instruction.type === 'copy' && instruction.destination)
         .map(instruction => instruction.destination!.toLowerCase());
     return copyDestinationsLowerCase.some(dest => dest.split(sep)[0] === BEPINEX_DIR.toLowerCase())
-        && !copyDestinationsLowerCase.includes(join(BEPINEX_MOD_PATH, QMM_DIR, QMM_CORE_DLL).toLowerCase())
         && [...BEPINEX_INJECTOR_CORE_FILES, BEPINEX_5_CORE_DLL].every(file => copyDestinationsLowerCase.includes(join(BEPINEX_DIR, BEPINEX_CORE_DIR, file).toLowerCase()));
 }
 

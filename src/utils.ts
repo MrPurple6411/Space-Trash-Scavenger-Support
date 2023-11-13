@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -38,7 +38,7 @@ import toPromise = util.toPromise;
 /**
  * Utility function to retrieve a game discovery result from the Vortex API.
  * @param state 
- * @param gameId The game ID to retrieve the discovery result for. Defaults to Subnautica: Below Zero.
+ * @param gameId The game ID to retrieve the discovery result for. Defaults to Space Trash Scavenger.
  * @returns The game discovery result, or undefined if the game has not been discovered.
  */
 export const getDiscovery = (state: IState, gameId: string = NEXUS_GAME_ID): IDiscoveryResult | undefined =>
@@ -46,7 +46,7 @@ export const getDiscovery = (state: IState, gameId: string = NEXUS_GAME_ID): IDi
 
 /**
  * Utility function to retrieve the path to the mods directory.
- * @param gamePath The path to the Subnautica: Below Zero game directory.
+ * @param gamePath The path to the Space Trash Scavenger game directory.
  * @returns The path to the mods directory. At this time, it always returns the path to the BepInEx plugins directory.
  */
 export const getModPath = (gamePath: string = '') => join(gamePath, BEPINEX_MOD_PATH);
@@ -55,7 +55,7 @@ export const getModPath = (gamePath: string = '') => join(gamePath, BEPINEX_MOD_
  * Utility function to retrieve a list of mods for the specified game from the Vortex API.
  * @param state 
  * @param status Which mod types to retrieve.
- * @param gameId The game ID to retrieve the mods for. Defaults to Subnautica: Below Zero.
+ * @param gameId The game ID to retrieve the mods for. Defaults to Space Trash Scavenger.
  * @returns A list of mods for the specified game.
  */
 export const getMods = <T extends 'enabled' | 'disabled' | 'uninstalled' | 'all'>(state: IState, status: T = ('all' as T), gameId: string = NEXUS_GAME_ID):
@@ -87,7 +87,7 @@ export const getMods = <T extends 'enabled' | 'disabled' | 'uninstalled' | 'all'
  * Utility function to reinstall a mod via the Vortex API.
  * @param api 
  * @param mod The mod to reinstall.
- * @param gameId The game ID to reinstall the mod for. Defaults to Subnautica: Below Zero.
+ * @param gameId The game ID to reinstall the mod for. Defaults to Space Trash Scavenger.
  * @returns True if the mod was reinstalled, false otherwise.
  */
 export const reinstallMod = (api: IExtensionApi, mod: IMod, gameId: string = NEXUS_GAME_ID): Promise<boolean> => {

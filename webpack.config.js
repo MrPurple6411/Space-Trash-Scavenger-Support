@@ -1,6 +1,6 @@
 const webpack = require('vortex-api/bin/webpack').default;
 
-const config = webpack('game-subnautica', __dirname, 4);
+const config = webpack('game-spacetrashscavenger', __dirname, 4);
 
 module.exports =
 {

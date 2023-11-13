@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -19,17 +19,17 @@
 /**
  * Internal extension id used for namespacing of session/localStorage keys.
  */
-export const EXTENSION_ID = 'me.tobey.vortex.subnautica-below-zero-support';
+export const EXTENSION_ID = 'me.mrpurple6411.vortex.space-trash-scavenger-support';
 
 /**
  * Name of the game.
  */
-export const GAME_NAME = 'Subnautica: Below Zero';
+export const GAME_NAME = 'Space Trash Scavenger';
 
 /**
- * Path to the Subnautica: Below Zero game executable relative to the game directory.
+ * Path to the Space Trash Scavenger game executable relative to the game directory.
  */
-export const GAME_EXE = 'SubnauticaZero.exe';
+export const GAME_EXE = 'SpaceTrashScavenger.exe';
 
 /**
  * Path to the Unity Player assembly relative to the game directory.
@@ -48,15 +48,11 @@ export const TRANSLATION_OPTIONS = {
         bepinex: 'BepInEx',
         plugins: 'plugins',
         patchers: 'patchers',
-        qmodmanager: 'QModManager',
-        qmm: 'QMM',
-        qmods: 'QMods',
         legacy: 'legacy',
         stable: 'stable',
         steam: 'Steam',
         experimental: 'experimental',
         vortex: 'Vortex',
-        'living-large': 'Living Large',
         'br': '<br/>',
     },
 } as const;

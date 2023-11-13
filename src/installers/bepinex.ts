@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -17,21 +17,16 @@
  */
 import { basename, dirname, join, sep } from 'path';
 import { store } from '../';
-import { BEPINEX_CONFIG_DIR, BEPINEX_CORE_DIR, BEPINEX_DIR, BEPINEX_MOD_PATH, isBepInExCoreFileInstalled, isBepInExEnabled } from '../bepinex';
-import { TRANSLATION_OPTIONS } from '../constants';
-import { QMM_DIR, QMM_URL, areAnyQModsEnabled, isQModManagerEnabled } from '../qmodmanager';
-import { getMods, reinstallMod } from '../utils';
+import { BEPINEX_CONFIG_DIR, BEPINEX_CORE_DIR, BEPINEX_DIR } from '../bepinex';
 import { BEPINEX_5_CORE_DLL } from '../mod-types/bepinex-5';
 import { BEPINEX_6_CORE_DLL } from '../mod-types/bepinex-6';
-import { QMM_4_MOD_TYPE, QMM_CORE_DLL } from '../mod-types/qmodmanager-4';
 import { NEXUS_GAME_ID } from '../platforms/nexus';
-import { types, util } from 'vortex-api';
+import { types } from 'vortex-api';
 import IExtensionApi = types.IExtensionApi;
 import IExtensionContext = types.IExtensionContext;
 import IInstallResult = types.IInstallResult;
 import IInstruction = types.IInstruction;
 import TestSupported = types.TestSupported;
-import opn = util.opn;
 
 /**
  * BepInEx core filenames.
@@ -50,7 +45,6 @@ export const testSupported: TestSupported = async (files, gameId) => {
         requiredFiles: [],
         supported: gameId === NEXUS_GAME_ID
             && filesLowerCase.some(file => file.split(sep)[0] === BEPINEX_DIR.toLowerCase())
-            && !filesLowerCase.includes(join(BEPINEX_MOD_PATH, QMM_DIR, QMM_CORE_DLL).toLowerCase())
             && (filesLowerCase.includes(join(BEPINEX_DIR, BEPINEX_CORE_DIR, BEPINEX_5_CORE_DLL).toLowerCase())
                 || filesLowerCase.includes(join(BEPINEX_DIR, BEPINEX_CORE_DIR, BEPINEX_6_CORE_DLL).toLowerCase()))
             && BEPINEX_INJECTOR_CORE_FILES.every(file => filesLowerCase.includes(join(BEPINEX_DIR, BEPINEX_CORE_DIR, file).toLowerCase()))
@@ -64,46 +58,8 @@ export const testSupported: TestSupported = async (files, gameId) => {
  * @returns 
  */
 export const install = async (api: IExtensionApi, files: string[]) => {
-    if (isQModManagerEnabled(api.getState()) &&
-        !isBepInExEnabled(api.getState()) &&
-        await isBepInExCoreFileInstalled(api.getState())) {
-
-        // the user appears to have installed QModManager with an old version of the extension,
-        // so they need to reinstall it so we can filter out the bepinex files to avoid conflicts
-
-        const potentials = getMods(api.getState(), 'enabled').filter(mod =>
-            mod.attributes?.homepage === QMM_URL ||
-            (mod.attributes?.modId === 1 && mod.attributes?.downloadGame === 'subnauticabelowzero') ||
-            mod.type === QMM_4_MOD_TYPE);
-        const qmm = potentials.length === 1 ? potentials[0] : undefined;
-
-        api.sendNotification?.({
-            id: 'reinstall-qmm',
-            type: 'error',
-            title: api.translate('Incompatible {{qmodmanager}} installation detected', TRANSLATION_OPTIONS),
-            message: api.translate('Please reinstall {{qmodmanager}} before installing {{bepinex}}.', TRANSLATION_OPTIONS),
-            actions: [
-                qmm // if there's only one matching QModManager mod installed, we can reinstall it automatically
-                    ? { title: api.translate('Reinstall'), action: () => reinstallMod(api, qmm) }
-                    : { title: api.translate('Get {{qmodmanager}}', TRANSLATION_OPTIONS), action: () => opn(QMM_URL) }
-            ],
-        });
-
-        return <IInstallResult>{
-            instructions: []
-        }
-    }
-
     api.dismissNotification?.('bepinex-missing');
     api.dismissNotification?.('reinstall-bepinex');
-
-    const legacyConfig = files.find(file => basename(file).toLowerCase() === 'bepinex.legacy.cfg'
-        && basename(dirname(file)).toLowerCase() === BEPINEX_CONFIG_DIR.toLowerCase());
-    const stableConfig = files.find(file => basename(file).toLowerCase() === 'bepinex.cfg'
-        && basename(dirname(file)).toLowerCase() === BEPINEX_CONFIG_DIR.toLowerCase());
-
-    const shouldEnableLegacyConfig = isQModManagerEnabled(api.getState()) && areAnyQModsEnabled(api.getState());
-    store('bepinex-config', shouldEnableLegacyConfig ? 'legacy' : 'stable');
 
     return <IInstallResult>{
         instructions: [
@@ -112,30 +68,12 @@ export const install = async (api: IExtensionApi, files: string[]) => {
                 .map((source) => {
                     let destination = source;
 
-                    if (shouldEnableLegacyConfig && legacyConfig && stableConfig) {
-                        if (source === legacyConfig) {
-                            const dir = dirname(source);
-                            const file = basename(source).split('.').filter(x => x !== 'legacy').join('.');
-                            destination = join(dir, file);
-                        } else if (source === stableConfig) {
-                            const dir = dirname(source);
-                            const file = basename(source).split('.');
-                            file.splice(file.length - 1, 0, 'stable');
-                            destination = join(dir, file.join('.'));
-                        }
-                    }
-
                     return <IInstruction>{
                         type: 'copy',
                         source,
                         destination
                     }
                 })
-                .filter(instruction =>
-                    !legacyConfig ||
-                    instruction.destination !== stableConfig ||
-                    !shouldEnableLegacyConfig ||
-                    (legacyConfig && instruction.source === legacyConfig))
         ]
     }
 }

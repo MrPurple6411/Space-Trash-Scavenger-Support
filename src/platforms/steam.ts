@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -17,6 +17,6 @@
  */
 
 /**
- * Steam game id for Subnautica: Below Zero.
+ * Steam game id for Space Trash Scavenger.
  */
-export const STEAM_GAME_ID = '848450';
+export const STEAM_GAME_ID = '880953';

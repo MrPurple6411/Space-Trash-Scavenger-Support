@@ -1,5 +1,5 @@
 /**
- * Subnautica: Below Zero Support - Vortex support for Subnautica
+ * Space Trash Scavenger Support - Vortex support for Space Trash Scavenger
  * Copyright (C) 2023 Tobey Blaber
  * 
  * This program is free software; you can redistribute it and/or modify it
@@ -16,9 +16,7 @@
  * this program; if not, see <https://www.gnu.org/licenses>.
  */
 import { basename, dirname, join, sep } from 'path';
-import { BEPINEX_CONFIG_DIR, BEPINEX_CORE_DIR, BEPINEX_DIR, BEPINEX_MOD_PATH, BEPINEX_PATCHERS_DIR, BEPINEX_PLUGINS_DIR } from '../bepinex';
-import { QMM_DIR } from '../qmodmanager';
-import { QMM_CORE_DLL } from '../mod-types/qmodmanager-4';
+import { BEPINEX_CONFIG_DIR, BEPINEX_CORE_DIR, BEPINEX_DIR, BEPINEX_PATCHERS_DIR, BEPINEX_PLUGINS_DIR } from '../bepinex';
 import { NEXUS_GAME_ID } from '../platforms/nexus';
 import { types } from 'vortex-api';
 import IExtensionApi = types.IExtensionApi;
@@ -51,18 +49,12 @@ export const testSupported: TestSupported = async (files, gameId) => {
  */
 export const install = async (api: IExtensionApi, files: string[]) => {
     const sansDirectories = files.filter(file => !file.endsWith(sep));
-    const isQMM = sansDirectories.map(file => file.toLowerCase()).includes(join(BEPINEX_MOD_PATH, QMM_DIR, QMM_CORE_DLL).toLowerCase());
     const dirs = sansDirectories.map(file => dirname(file).toLowerCase().split(sep));
     const index = dirs.some(segments => segments[0] === BEPINEX_DIR.toLowerCase()) ? 1 : 0;
     const filtered = sansDirectories.filter(file =>
         file.split(sep).length > index
-        && (file.split(sep)[index].toLowerCase() !== BEPINEX_CORE_DIR.toLowerCase()
-            || (isQMM && ['0harmony109.dll', '0harmony12.dll'].includes(basename(file).toLowerCase())))
-        && (!isQMM || basename(file).toLowerCase() !== 'bepinex.cfg'));
-
-    if (isQMM) {
-        api.dismissNotification?.('reinstall-qmm');
-    }
+        && (file.split(sep)[index].toLowerCase() !== BEPINEX_CORE_DIR.toLowerCase())
+        && (basename(file).toLowerCase() !== 'bepinex.cfg'));
 
     return <IInstallResult>{
         instructions: [
